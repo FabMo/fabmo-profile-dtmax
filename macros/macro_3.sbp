@@ -5,25 +5,25 @@
 &homing_input = 3
 &homing_speed = 3.0
 &x_search = -38.0
-&x_search_speed = 3.0
-&x_backoff = 0.1
+&x_search_speed = 2.5
+&x_backoff = 0.25
 
 &y_search = -26.0
-&y_backoff = 0.5
-&y_search_speed = 3.0
+&y_backoff = 0.25
+&y_search_speed = 2.5
 
 &z_search = 8.0
-&z_backoff = -0.5
+&z_backoff = -0.125
 &z_search_speed = 1.5
 
-&home_position_x = 1.25
-&home_position_y = 1.25
+&home_position_x = 0 
+&home_position_y = 0
 
 ' -------- Main Program Section --------
 GOSUB backoff_if_needed
+GOSUB home_z
 GOSUB home_x
 GOSUB home_y
-GOSUB home_z
 GOSUB go_home
 
 END
@@ -32,36 +32,30 @@ END
 ' The functions in this section are called by the main program
 home_x:
 	GOSUB get_positions
-    PX,&xpos+&x_search,&x_search_speed,&homing_input
-    ZX
-    JX,&x_backoff
-    ZX
-    RETURN
+    PX,%(1)+&x_search,&x_search_speed,&homing_input
+    &switchPos = %(1)
+    JX,%(1)+&x_backoff
+	VA,0,,,,,,0,,,,,
+	RETURN
 
 home_y:
-	GOSUB get_positions
-    PY,&ypos+&y_search,&y_search_speed,&homing_input
-    ZY
-    JY,&y_backoff
-    ZY
-    RETURN
+    PY,%(2)+&y_search,&y_search_speed,&homing_input
+    JY,%(2)+&y_backoff
+	VA,,0,,,,,,0,,,,
+	RETURN
 
 home_z:
 	GOSUB get_positions
-    PZ,&zpos+&z_search,&z_search_speed,&homing_input
-    ZZ
-    JZ,&z_backoff
-    ZZ
-    RETURN
+    PZ,%(3)+&z_search,&z_search_speed,&homing_input
+    JZ,%(3)+&z_backoff
+	VA,,,,,,,,,0,,,
+	RETURN
 
 go_home:
-	J2 &home_position_x, &home_position_y
-    Z2
+	J2,&home_position_x, &home_position_y
+	RETURN
     
 get_positions:
-	&xpos = %(1)
-    &ypos = %(2)
-    &zpos = %(3)
     &homing_input_value = %(51)
     RETURN
 
@@ -72,5 +66,5 @@ backoff_if_needed:
     
 backoff:
 	GOSUB get_positions
-    M3,&xpos+&x_backoff,&ypos+&y_backoff,&zpos+&z_backoff
+    M3,%(1)+&x_backoff,%(2)+&y_backoff,%(3)+&z_backoff
     RETURN
