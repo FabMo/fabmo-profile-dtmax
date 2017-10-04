@@ -1,4 +1,8 @@
-'!FABMO!name:Start Spindle
-'!FABMO!description:Start the spindle and pause for spin up
-'Start the spindle
-SO,1,1
+'!FABMO!name: Spindle On
+'!FABMO!description: Turns spindle ON, SBP convention for managing tools
+' Name: Spindle On
+' Description: Turns spindle ON, SBP convention for managing tools [C6]
+
+SO, 1, 1            ' Make OUTPUT #1 ACTIVE (high)
+PAUSE .1            ' ... optional pause for spinup, now automatic in FabMo
+
