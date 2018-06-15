@@ -16,12 +16,12 @@ SU,0                          ' Set to Inches; Units will auto-revert to current
 '--- Settings ---
 Inch:
 	$x_park_in := 12          ' Initializes if not already set
-	$y_park_in := 30
+	$y_park_in := 16
 	$z_park_in := 1.5
 	GOTO Move_to_Position_INCH
 Metric:
 	$x_park_mm := 300
-	$y_park_mm := 760
+	$y_park_mm := 400
 	$z_park_mm := 40
 	GOTO Move_to_Position_MM
 
